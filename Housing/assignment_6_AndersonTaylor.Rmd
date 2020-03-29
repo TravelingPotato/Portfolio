@@ -1,0 +1,178 @@
+---
+title: "Assignment 6.1"
+author: "Taylor Anderson"
+date: "7/14/2019"
+output:
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(openxlsx)
+housing <- read.xlsx("week-6-housing.xlsx")
+```
+
+### a.
+##### Explain why you chose to remove data points from your ‘clean’ dataset.
+
+```{r clean}
+housing_clean <- na.omit(subset(housing, select =c(Sale.Price, square_feet_total_living, bedrooms, bath_full_count, bath_half_count, bath_3qtr_count, year_built, year_renovated)))
+```
+I removed many non deterministic values such as address and sale type. I have 8 variables remaining: price, squarefeet, year built, year renovated, bedrooms, and several bathroom variables.
+
+### b.
+##### Create two variables; one that will contain the variables Sale Price and Square Foot of Lot (same variables used from previous assignment on simple regression) and one that will contain Sale Price and several additional predictors of your choice. Explain the basis for your additional predictor selections.
+
+```{r two variables}
+sqfeet_lm <- lm(Sale.Price ~ square_feet_total_living, housing_clean)
+other_lm <- lm(Sale.Price ~ square_feet_total_living + year_built + bedrooms + bath_full_count, housing_clean)
+```
+I decided to add year built, bathrooms and bedrooms to the second model because they seem important to the price of a house. I am worried that bathrooms and bedrooms will have multicolinearity with square feet though.
+
+### c.
+##### Execute a summary() function on two variables defined in the previous step to compare the model results. What are the R2 and Adjusted R2 statistics? Explain what these results tell you about the overall model. Did the inclusion of the additional predictors help explain any large variations found in Sale Price?
+
+```{r summary1}
+summary(sqfeet_lm)
+```
+
+```{r summary2}
+summary(other_lm)
+```
+
+With only square feet the model was able to account for 20.7% of the variability in the data. By adding the other two variables
+we increased to 22%.
+
+### d.
+##### Considering the parameters of the multiple regression model you have created. What are the standardized betas for each parameter and what do the values indicate?
+
+```{r standardBeta}
+library(lm.beta)
+lm.beta(other_lm)
+```
+
+The values of standardized betas tells us that the number of square feet a house has the highest importance in determaining the cost. Year built is somewhat important and bedrooms and bathrooms are far behind that.
+
+### e.
+##### Calculate the confidence intervals for the parameters in your model and explain what the results indicate.
+
+```{r confidence}
+confint(other_lm)
+```
+
+These confidence intervals show us that we are 95% certain that the true betas of each of these variables fall between these values. It is clear that there is multicollinearity with bedrooms unfortunetly. 
+
+### f.
+##### Assess the improvement of the new model compared to your original model (simple regression model) by testing whether this change is significant by performing an analysis of variance.
+
+```{r assess}
+anova(sqfeet_lm, other_lm)
+```
+
+The anova table shows us that the multiple regression is significantly better than the simple regression model.
+
+### g.
+##### Perform casewise diagnostics to identify outliers and/or influential cases, storing each function's output in a dataframe assigned to a unique variable name.
+
+```{r outlier}
+other_lm_diag <- subset(housing_clean, select = c(Sale.Price, square_feet_total_living, year_built, bedrooms, bath_full_count))
+other_lm_diag$residuals <- resid(other_lm)
+other_lm_diag$standardized.residuals <- rstandard(other_lm)
+other_lm_diag$studentized.residuals <- rstudent(other_lm)
+other_lm_diag$cooks.distance <- cooks.distance(other_lm)
+other_lm_diag$dfbeta <- dfbeta(other_lm)
+other_lm_diag$dffit <- dffits(other_lm)
+other_lm_diag$leverage <- hatvalues(other_lm)
+other_lm_diag$covariance.ratios <- covratio(other_lm)
+```
+
+### h.
+##### Calculate the standardized residuals using the appropriate command, specifying those that are +-2, storing the results of large residuals in a variable you create.
+
+```{r rstandards}
+other_lm_diag$large.residuals <- other_lm_diag$standardized.residuals > 2|other_lm_diag$standardized.residuals < -2
+```
+
+### i.
+##### Use the appropriate function to show the sum of large residuals.
+
+```{r sum}
+sum(other_lm_diag$large.residuals)
+```
+
+### j.
+##### Which specific variables have large residuals (only cases that evaluate as TRUE)?
+
+```{r large}
+head(other_lm_diag[other_lm_diag$large.residuals, c("Sale.Price", "square_feet_total_living", "year_built", "bedrooms", "bath_full_count", "standardized.residuals")])
+```
+
+Only showing the first 6 examples as the full data frame is 329 rows.
+
+### k.
+##### Investigate further by calculating the leverage, cooks distance, and covariance rations. Comment on all cases that are problematics.
+
+```{r investigate}
+high_res <- other_lm_diag[other_lm_diag$large.residuals, c("cooks.distance", "leverage", "covariance.ratios")]
+```
+```{r cooks}
+sum(high_res$cooks.distance > 0.5)
+```
+There are no cooks distances greater than 1, or even 0.5. This means that there are no points that would greatly alter results if removed.
+
+```{r leverage}
+average_leverage = (4 + 1)/12865
+sum(high_res$leverage > average_leverage * 2)
+sum(high_res$leverage > average_leverage * 3)
+```
+There are 98 observations more than double the average leverage and 65 over triple the average leverage.
+
+```{r cov}
+sum((high_res$covariance.ratios > 1 + (3*(4 + 1)/12865))|(high_res$covariance.ratios < 1 - (3*(4 + 1)/12865)))
+```
+There are 262 observations outside of the standard range of covariance ratios.
+
+### l.
+##### Perform the necessary calculations to assess the assumption of independence and state if the condition is met or not.
+```{r independence}
+library(car)
+dwt(other_lm)
+```
+This model does have positive autocorrelation.
+
+### m.
+##### Perform the necessary calculations to assess the assumption of no multicollinearity and state if the condition is met or not.
+
+```{r multicollinearity}
+vif(other_lm)
+```
+```{r tolerance}
+1/vif(other_lm)
+```
+There does not appear to be an issue with multicollinearity.
+
+### m.
+##### Visually check the assumptions related to the residuals using the plot() and hist() functions. Summarize what each graph is informing you of and if any anomalies are present.
+```{r plot}
+plot(other_lm)
+```
+Residuals vs Fitted shows that the model may be heteroscedastic.
+Normal Q-Q shows that the data has heavy tails and has more values at extremes than we would expect with a normal distribution
+Scale-location shows that residuals are not spread evenly, especially in the more expensive homes.
+Residual vs leverage shows that there is no influencing case though case 295 is close.
+
+```{r histo}
+library(ggplot2)
+histogram <- ggplot(other_lm_diag, aes(studentized.residuals)) + geom_histogram(aes(y = ..density..), color = "black", fill = "white", binwidth = .3) +
+  labs(x = "Studentized Residual", y = "Density")
+histogram + stat_function(fun=dnorm, args = list(mean = mean(other_lm_diag$studentized.residuals, na.rm = TRUE), 
+                                                 sd = sd(other_lm_diag$studentized.residuals, na.rm = TRUE)), color = "red", size = 1)
+```
+
+The residuals are not very normal. This histogram has some residuals further in the tail than we would expect and it is very narrow otherwise.
+
+### o.
+##### Overall, is this regression model unbiased? If an unbiased regression model, what does this tell us about the sample vs. the entire population model?
+
+This model does seem to have bias and may not be a good model to use against another population. 
