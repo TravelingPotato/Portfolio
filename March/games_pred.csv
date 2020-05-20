@@ -1,0 +1,68 @@
+,team1,team2,round,winner,pred2,pred3
+0,Belmont,Temple,1,1,True,True
+1,North Dakota State,North Carolina Central,1,1,True,True
+2,Arizona State,St. John's (NY),1,1,True,True
+3,Prairie View,Fairleigh Dickinson,1,0,True,True
+4,Duke,North Dakota State,2,1,True,True
+5,VCU,UCF,2,0,True,False
+6,Mississippi State,Liberty,2,1,True,True
+7,Virginia Tech,Saint Louis,2,1,True,True
+8,Maryland,Belmont,2,1,True,False
+9,LSU,Yale,2,1,True,False
+10,Louisville,Minnesota,2,0,True,True
+11,Michigan State,Bradley,2,1,True,True
+12,Gonzaga,Fairleigh Dickinson,2,1,True,True
+13,Syracuse,Baylor,2,0,True,False
+14,Marquette,Murray State,2,0,True,True
+15,Florida State,Vermont,2,1,True,False
+16,Buffalo,Arizona State,2,1,True,True
+17,Texas Tech,Northern Kentucky,2,1,True,True
+18,Nevada,Florida,2,0,True,False
+19,Michigan,Montana,2,1,True,True
+20,Virginia,Gardner-Webb,2,1,True,True
+21,Ole Miss,Oklahoma,2,0,False,False
+22,Wisconsin,Oregon,2,0,True,False
+23,Kansas State,UC-Irvine,2,0,True,True
+24,Villanova,Saint Mary's,2,1,True,True
+25,Purdue,Old Dominion,2,1,True,True
+26,Cincinnati,Iowa,2,0,True,False
+27,Tennessee,Colgate,2,1,True,False
+28,North Carolina Central,Iona,2,1,True,True
+29,Utah State,Washington,2,0,True,True
+30,Auburn,New Mexico State,2,1,True,True
+31,Kansas State,Northeastern,2,1,True,True
+32,Iowa State,Ohio State,2,0,False,False
+33,Houston,Georgia State,2,1,True,True
+34,Wofford,Seton Hall,2,1,True,True
+35,Kentucky,Abilene Christian,2,1,True,True
+36,Duke,UCF,3,1,True,True
+37,Liberty,Virginia Tech,3,0,True,False
+38,Maryland,LSU,3,0,True,False
+39,Minnesota,Michigan State,3,0,True,True
+40,Gonzaga,Baylor,3,1,True,True
+41,Murray State,Florida State,3,0,True,False
+42,Buffalo,Texas Tech,3,0,True,True
+43,Florida,Michigan State,3,0,True,True
+44,Virginia,Oklahoma,3,1,True,True
+45,Oregon,UC-Irvine,3,1,True,True
+46,Villanova,Purdue,3,0,True,True
+47,Iowa,Tennessee,3,0,True,True
+48,North Carolina Central,Washington,3,1,True,False
+49,Auburn,Kansas,3,1,True,True
+50,Ohio State,Houston,3,0,True,True
+51,Wofford,Kentucky,3,0,True,True
+52,Duke,Virginia Tech,4,1,True,True
+53,LSU,Michigan State,4,0,True,True
+54,Gonzaga,Florida State,4,1,True,True
+55,Texas Tech,Michigan,4,1,True,True
+56,Virginia,Oregon,4,1,True,True
+57,Purdue,Tennessee,4,1,True,False
+58,North Carolina Central,Auburn,4,0,True,True
+59,Houston,Kentucky,4,0,True,True
+60,Duke,Michigan State,5,0,True,True
+61,Gonzaga,Texas Tech,5,0,True,True
+62,Virginia,Purdue,5,1,True,True
+63,Auburn,Kentucky,5,1,True,True
+64,Michigan State,Texas Tech,6,0,True,True
+65,Virginia,Auburn,6,1,True,True
+66,Texas Tech,Virginia,7,0,True,True
