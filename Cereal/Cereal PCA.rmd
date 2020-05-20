@@ -1,0 +1,106 @@
+---
+title: "Cereal PCA"
+author: "Taylor Anderson"
+date: "4/25/2020"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r dataclean}
+library(factoextra)
+library(tidyverse)
+library(dplyr)
+
+cereals_data <- read_csv("cereal.csv")
+
+colnames(cereals_data) <- c("Name", "Manufacturer", "Type", "Calories", "Protein", "Fat", "Sodium", "Fiber", "Carbohydrates", "Sugar", "Potassium", "Vitamins", "Shelf", "Weight", "Cups", "Rating")
+
+# Create feature with full manufacturer name
+cereals_data$Manufacturer_Name <- cereals_data$Manufacturer
+
+cereals_data$Manufacturer_Name <- gsub(pattern = "P", replacement = "Post", x = cereals_data$Manufacturer_Name)
+cereals_data$Manufacturer_Name <- gsub(pattern = "A", replacement = "American Home Food Products", x = cereals_data$Manufacturer_Name)
+cereals_data$Manufacturer_Name <- gsub(pattern = "G", replacement = "General Mills", x = cereals_data$Manufacturer_Name)
+cereals_data$Manufacturer_Name <- gsub(pattern = "K", replacement = "Kellogs", x = cereals_data$Manufacturer_Name)
+cereals_data$Manufacturer_Name <- gsub(pattern = "N", replacement = "Nabisco", x = cereals_data$Manufacturer_Name)
+cereals_data$Manufacturer_Name <- gsub(pattern = "Q", replacement = "Quaker Oats", x = cereals_data$Manufacturer_Name)
+cereals_data$Manufacturer_Name <- gsub(pattern = "R", replacement = "Ralston Purina", x = cereals_data$Manufacturer_Name)
+cereals_data$Manufacturer <- factor(cereals_data$Manufacturer)
+
+# Replace negative values with NA
+cereals_data$Carbohydrates[cereals_data$Carbohydrates < 0] <- NA
+cereals_data$Sugar[cereals_data$Sugar < 0] <- NA
+cereals_data$Potassium[cereals_data$Potassium < 0] <- NA
+
+# Add nutritionals per ounce
+cereals_data$Calories_oz <- cereals_data$Calories / cereals_data$Weight
+cereals_data$Protein_oz <- cereals_data$Protein / cereals_data$Weight
+cereals_data$Fat_oz <- cereals_data$Fat / cereals_data$Weight
+cereals_data$Sodium_oz <- cereals_data$Sodium / cereals_data$Weight
+cereals_data$Fiber_oz <- cereals_data$Fiber / cereals_data$Weight
+cereals_data$Carbohydrates_oz <- cereals_data$Carbohydrates / cereals_data$Weight
+cereals_data$Sugar_oz <- cereals_data$Sugar / cereals_data$Weight
+cereals_data$Potassium_oz <- cereals_data$Potassium / cereals_data$Weight
+cereals_data$Vitamins_oz <- cereals_data$Vitamins / cereals_data$Weight
+
+```
+
+```{r dataprep}
+library(standardize)
+# Create subset for PCA
+PCA_data <- cereals_data %>% 
+  select(Name, Manufacturer_Name, Calories = Calories_oz, Protein = Protein_oz, Fat = Fat_oz, Sodium = Sodium_oz, Fiber = Fiber_oz, Carbohydrates = Carbohydrates_oz, Sugar = Sugar_oz, Potassium = Potassium_oz, Rating)
+
+# Remove observations with NAs
+PCA_data <- PCA_data[complete.cases(PCA_data),]
+
+PCA_cereals <- prcomp(PCA_data[, 3:11], scale. = TRUE)
+
+# Obtain Summary of PCA
+summary(PCA_cereals)
+```
+```{r stan}
+
+PCA_stand <- scale(PCA_data[, 3:11])
+PCA_cereals_stand <- prcomp(PCA_stand, scale. = TRUE)
+```
+
+
+```{r percentofvariables}
+# Obtain Scree Plot
+fviz_eig(PCA_cereals_stand)
+```
+
+```{r PCA}
+library(ggpubr)
+
+# PCA Variables
+fviz_pca_var(PCA_cereals_stand, 
+             col.var = "contrib", 
+             repel = TRUE, 
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             title = "Principal Component Analysis: Variable Contribution",
+             legend.title = "Contribution"
+             )
+```
+
+```{r PCA2}
+# PCA Biplot: Variables and Individuals
+fviz_pca_biplot(PCA_cereals_stand, 
+                geom.ind = "point", 
+                pointshape = 21, 
+                pointsize = 3, 
+                fill.ind = PCA_data$Manufacturer_Name,
+                # col.ind = "Black", 
+                alpha = 0.8, 
+                mean.point = FALSE, 
+                col.var = factor(c("Input", "Input", "Input", "Input", "Input", "Input", "Input", "Input", "Output")), # Colour inputs and outputs differently
+                repel = TRUE, 
+                legend.title = list(fill = "Manufacturer", color = "Parameters"),
+                title = "Principal Component Analysis") +
+  fill_palette("Set1") + # Palette for individuals
+  color_palette(palette = "aaas") # Palette for variables
+```

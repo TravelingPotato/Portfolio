@@ -1,0 +1,146 @@
+---
+title: "Untitled"
+author: "Jonathan Lawrence"
+date: "4/6/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load the dataset + Account for missing data
+dat <- read.csv("cereal_cleaned.csv", header = TRUE, na.strings = c("", "NA"))
+```
+
+## EDA
+
+```{r stats}
+summary(dat)
+```
+# Distribution of Number of cups per Serving
+## The first thing that caught out attention was the number of cups of cereal per serving. We thought that the cereal's rating might be affected based on the weight of the cereal being used. 
+
+```{r cups_serving}
+library(ggplot2)
+
+ggplot(dat) + 
+  geom_histogram(aes(x = cups, fill = manufacturer)) +
+  labs(fill = "Manufacturer", title = "Distribution of Number of cups per Serving", x = "Cups per serving", y = "Count")
+```
+# Distribution of Ratings by Manufacturer
+```{r ratings_manufacturer}
+ggplot(dat) + 
+  geom_histogram(aes(x = rating, fill = manufacturer)) +
+  labs(fill = "Manufacturer", title = "Distribution of Ratings by Manufacturer")
+```
+
+
+# Distribution of Calorie Content by Manufacturer 
+```{r calorie_manufacturer}
+ggplot(dat) + 
+  geom_boxplot(aes(x = calories, y = manufacturer, fill = manufacturer)) +
+  labs(fill = "Manufacturer", title = "Distribution of Calorie Content by Manufacturer", x = "Calories", y = "Manufacturer")
+```
+# Distribution of Protein Content by Manufacturer 
+```{r protein_manufacturer}
+ggplot(dat) + 
+  geom_boxplot(aes(x = protein, y = manufacturer, fill = manufacturer)) +
+  labs(fill = "Manufacturer", title = "Distribution of Protein Content by Manufacturer", x = "Protein", y = "Manufacturer")
+```
+# Distribution of Fat Content by Manufacturer 
+```{r fat_manufacturer}
+ggplot(dat) + 
+  geom_boxplot(aes(x = fat, y = manufacturer, fill = manufacturer)) +
+  labs(fill = "Manufacturer", title = "Distribution of Fat Content by Manufacturer", x = "Fat", y = "Manufacturer")
+```
+# Distribution of Sodium Content by Manufacturer 
+```{r sodium_manufacturer}
+ggplot(dat) + 
+  geom_boxplot(aes(x = sodium, y = manufacturer, fill = manufacturer)) +
+  labs(fill = "Manufacturer", title = "Distribution of Sodium Content by Manufacturer", x = "Sodium", y = "Manufacturer")
+```
+
+# Distribution of Fiber Content by Manufacturer 
+```{r fiber_manufacturer}
+ggplot(dat) + 
+  geom_boxplot(aes(x = fiber, y = manufacturer, fill = manufacturer)) +
+  labs(fill = "Manufacturer", title = "Distribution of Fiber Content by Manufacturer", x = "Fiber", y = "Manufacturer")
+```
+
+# Distribution of Carbohydrates Content by Manufacturer 
+```{r carbohydrates_manufacturer}
+ggplot(dat) + 
+  geom_boxplot(aes(x = carbo, y = manufacturer, fill = manufacturer)) +
+  labs(fill = "Manufacturer", title = "Distribution of Carbohydrate Content by Manufacturer", x = "Carbohydrates", y = "Manufacturer")
+```
+
+# Distribution of Sugars Content by Manufacturer 
+```{r sugars_manufacturer}
+ggplot(dat) + 
+  geom_boxplot(aes(x = sugars, y = manufacturer, fill = manufacturer)) +
+  labs(fill = "Manufacturer", title = "Distribution of Sugar Content by Manufacturer", x = "Sugars", y = "Manufacturer")
+```
+
+# Distribution of Vitamin Content by Manufacturer 
+```{r vitamin_manufacturer}
+ggplot(dat) + 
+  geom_boxplot(aes(x = vitamins, y = manufacturer, fill = manufacturer)) +
+  labs(fill = "Manufacturer", title = "Distribution of Vitamin Content by Manufacturer", x = "Vitamins", y = "Manufacturer")
+```
+
+# Distribution of Calories Content by Rating 
+```{r calories_rating}
+ggplot(dat, aes(x = calories, y = rating)) + 
+  geom_point() + 
+  labs(title = "Distribution of Calorie Content (per serving) by Rating", x = "Calories", y = "Rating")
+```
+
+# Distribution of Protein Content by Rating 
+```{r protein_rating}
+ggplot(dat, aes(x = protein, y = rating)) + 
+  geom_point() + 
+  labs(title = "Distribution of Protein Content (per serving) by Rating", x = "Protein", y = "Rating")
+```
+
+# Distribution of Fat Content by Rating 
+```{r fat_rating}
+ggplot(dat, aes(x = fat, y = rating)) + 
+  geom_point() + 
+  labs(title = "Distribution of Fat Content (per serving) by Rating", x = "Fat", y = "Rating")
+```
+
+# Distribution of Sodium Content by Rating 
+```{r sodium_rating}
+ggplot(dat, aes(x = sodium, y = rating)) + 
+  geom_point() + 
+  labs(title = "Distribution of Sodium Content (per serving) by Rating", x = "Sodium", y = "Rating")
+```
+
+# Distribution of Fiber Content by Rating 
+```{r fiber_rating}
+ggplot(dat, aes(x = fiber, y = rating)) + 
+  geom_point() + 
+  labs(title = "Distribution of Fiber Content (per serving) by Rating", x = "Fiber", y = "Rating")
+```
+
+# Distribution of Carbohydrate Content by Rating 
+```{r carbohydrates_rating}
+ggplot(dat, aes(x = carbo, y = rating)) + 
+  geom_point() + 
+  labs(title = "Distribution of Carbohydrate Content (per serving) by Rating", x = "Carbohydrates", y = "Rating")
+```
+
+# Distribution of Sugar Content by Rating 
+```{r sugar_rating}
+ggplot(dat, aes(x = sugars, y = rating)) + 
+  geom_point() + 
+  labs(title = "Distribution of Sugar Content (per serving) by Rating", x = "Sugar", y = "Rating")
+```
+
+# Distribution of Vitamin Content by Rating 
+```{r vitamin_rating}
+ggplot(dat, aes(x = vitamins, y = rating)) + 
+  geom_point() + 
+  labs(title = "Distribution of Vitamin Content (per serving) by Rating", x = "# of Vitamins per serving", y = "Rating")
+```
+
