@@ -1,4 +1,4 @@
-#NBA Salary Analysis
+# NBA Salary Analysis
 
 ### Prerequisites
 
@@ -8,7 +8,7 @@ Python
 Excel
 PowerPoint
 
-#####Packages
+##### Packages
 NumPy
 Pandas
 BeautifulSoup
