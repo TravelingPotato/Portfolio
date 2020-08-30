@@ -1,21 +1,21 @@
 # NBA Salary Analysis
 
-### Prerequisites
+## Prerequisites
 
 ##### Software
-Jupyter
-Python
-Excel
+Jupyter, 
+Python, 
+Excel, 
 PowerPoint
 
 ##### Packages
-NumPy
-Pandas
-BeautifulSoup
-Urlopen
-Seaborn
-MatPlotLib
-SkLearn
+NumPy, 
+Pandas, 
+BeautifulSoup, 
+Urlopen, 
+Seaborn, 
+MatPlotLib, 
+SkLearn, 
 Math
 
 ## Code Description
