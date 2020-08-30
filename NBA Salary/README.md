@@ -1,8 +1,7 @@
-# Project Title
-
-NBA Salary Analysis
+#NBA Salary Analysis
 
 ### Prerequisites
+
 ##### Software
 Jupyter
 Python
