@@ -10,12 +10,13 @@
 	784 pixels in length. This is a more simple approach but less accurate. Image processing is most useful when we associated 
 	pixels near eachother in the image, with eachother.When viewed in one dimension, pixels near eachother will not necessarily be 
 	near eachother in the array. Instead, we are determining the impact of each individual pixel on the image, rather than groups 
-	of pixels. I use gradient descent to train the model. When testing the model, we take in the pixel data and output a probability between 
-	0 and 1 for each of the 10 possible numbers. The highest probability value is the returned value. This method produced at 88.6% accuracy.
+	of pixels. I use gradient descent to train the model. When testing the model, we take in the pixel data and output a probability 
+	between 0 and 1 for each of the 10 possible numbers. The highest probability value is the returned value. This method produced at 
+	88.6% accuracy.
 	
 	In the second model we use a convolutional neural network to process the images. This is the superior method because we can look 
-	at the image in two dimensions. This allows us to find edges and other features in the image to help determine the handwritten number. 
-	This model also uses a softmax activation function to predict the handwritten numbers. This method has a 98.8% accuracy.
+	at the image in two dimensions. This allows us to find edges and other features in the image to help determine the handwritten 
+	number. This model also uses a softmax activation function to predict the handwritten numbers. This method has a 98.8% accuracy.
 	
 ## Prerequisites
 
